@@ -1,8 +1,8 @@
 # Site settings
-title: MainFrame
-description: "The only automation framework you will ever need."
+title: AFrame
+description: "Highly maintainable automation framework."
 baseurl: ""
-url: "http://yourdomain.com"
+url: "http://automationframework.io"
 
 # Build settings
 markdown: rdiscount
