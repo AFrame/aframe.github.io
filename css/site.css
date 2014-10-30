@@ -1,0 +1,30 @@
+﻿body {
+  margin: 0;
+  color: #333;
+  background-color: #fff;
+}
+.mf-navbar {
+  margin-bottom: 0;
+  background-color: #fff;
+  border-bottom: 0;
+}
+.mf-header {
+  background: #424141;
+  padding: 30px;
+  text-align: center;
+  color: #fff;
+}
+.mf-header .main-title {
+  font-size: 50px;
+  padding: 30px;
+}
+.mf-header .tag-line {
+  font-size: 35px;
+  padding: 20px;
+}
+.mf-header .showoff {
+  padding: 30px;
+}
+.mf-features {
+  text-align: center;
+}

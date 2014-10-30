@@ -1,0 +1,13 @@
+# Site settings
+title: MainFrame
+description: "The only automation framework you will ever need."
+baseurl: ""
+url: "http://yourdomain.com"
+
+# Build settings
+markdown: rdiscount
+permalink: pretty
+highlighter: pygments
+
+author:
+  name: Sam Thwaites
