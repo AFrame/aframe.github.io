@@ -2,7 +2,7 @@
 title: AFrame
 description: "Highly maintainable automation framework."
 baseurl: ""
-url: "http://automationframework.io"
+url: "https://aframe.github.io"
 
 # Build settings
 markdown: rdiscount

@@ -1,0 +1,25 @@
+---
+layout: default
+---
+
+<div class="af-header">
+    <div class="container">
+        <div class="heading">
+            {{ page.title }}
+        </div>
+    </div>
+</div>
+
+<div class="container" data-spy="scroll" data-target="#sidebar">
+    <div class="col-sm-4 hidden-xs hidden-sm">
+        <div id="sidebar" data-spy="affix" data-offset-top="146">
+            <ul class="nav">
+                <li><a href="#overview">Overview</a></li>                
+                <li><a href="#overview">Overview</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-8 col-xs-12">
+        {{ content }}
+    </div>
+</div>
