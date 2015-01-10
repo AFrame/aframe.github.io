@@ -17,14 +17,17 @@ body {
   border-bottom: 0;
 }
 .af-navbar .navbar-nav li a:hover {
-  background-color: #ec9047;
+  background-color: #e8ebee;
   color: white;
 }
 .af-header {
-  background: #424141;
+  background: rgba(77, 26, 217, 0.28);
+  /*background: #3d6580 url('/footer_lodyas.png');*/
   padding: 10px;
   color: #fff;
   text-align: center;
+  display: block;
+  position: relative;
 }
 .af-header .tag-line {
   font-size: 35px;
@@ -38,6 +41,17 @@ body {
 }
 .af-header .showoff h2 {
   padding-bottom: 30px;
+}
+.af-header::after {
+  content: "";
+  background: #3d6580 url('/footer_lodyas.png');
+  opacity: 0.6;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
 }
 .af-content {
   border-left: 1px solid black;
@@ -65,7 +79,7 @@ body {
 #sidebar .nav > li.active > a {
   font-weight: bold;
   color: #1d365d;
-  border-right: 3px solid #ec9047;
+  border-right: 3px solid #e8ebee;
 }
 #sidebar .nav > li .nav a {
   padding: 2px 20px;
@@ -95,6 +109,10 @@ body {
 .nav-tabs,
 .nav-pills {
   text-align: center;
+}
+.nav-tabs li > a,
+.nav-pills li > a {
+  color: white;
 }
 /* Small devices (tablets, 768px and up) */
 /* Medium devices (desktops, 992px and up) */

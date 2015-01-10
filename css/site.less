@@ -1,4 +1,4 @@
-﻿@navbar-hover-color: rgb(236, 144, 71);
+﻿@navbar-hover-color: #e8ebee;
 
 html, body{
     height: 100%;
@@ -33,10 +33,13 @@ body {
 }
 
 .af-header {
-  background: #424141;
-  padding: 10px;
-  color: #fff;
-  text-align: center;
+    background:rgba(77, 26, 217, 0.28);
+    /*background: #3d6580 url('/footer_lodyas.png');*/
+    padding: 10px;
+    color: #fff;
+    text-align: center;
+    display: block;
+  position: relative;
 
     .tag-line {
         font-size: 35px;
@@ -54,6 +57,18 @@ body {
             margin:  0 auto;
         }*/
     }
+}
+
+.af-header::after {
+  content: "";
+  background: #3d6580 url('/footer_lodyas.png');
+  opacity: 0.6;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;   
 }
 
 .af-features {
@@ -125,6 +140,14 @@ body {
 
 .nav-tabs, .nav-pills {
     text-align:center;
+
+     li > a{
+         color: white;
+     }
+
+     li.active > a{
+
+     }
 }
 
 
