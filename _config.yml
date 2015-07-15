@@ -5,9 +5,9 @@ baseurl: ""
 url: "https://aframe.github.io"
 
 # Build settings
-markdown: rdiscount
+markdown: kramdown
 permalink: pretty
-highlighter: pygments
+highlighter: rouge
 
 author:
   name: Sam Thwaites

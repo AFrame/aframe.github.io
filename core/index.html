@@ -14,40 +14,210 @@ layout: default
     <div class="col-sm-3 hidden-xs hidden-sm">
         <div id="sidebar" class="panel panel-default" data-spy="affix" data-offset-top="171">
             <ul class="nav">
-                <li>
-                    <a href="#">Controls</a>
+                <li class="active">
+                    <a href="#controls">Controls</a>
                     <ul class="nav">
-                        <li><a href="#controls-creating">Creating</a></li>
-                        <li><a href="#controls-finding">Finding</a></li>
+                        <li><a href="#controls-overview">Overview</a></li>
+                        <li><a href="#controls-creation">Creating Controls</a></li>
+                        <li><a href="#controls-scoping">Scoping</a></li>
+                        <li><a href="#controls-search-properties">Search Properties</a></li>
                     </ul>
-                </li>                
-                <li><a href="#test">Test</a></li>
-                <li><a href="#test2">Test2</a></li>
+                </li>
+                <li>
+                    <a href="#contexts">Contexts</a>
+                    <ul class="nav">
+                        <li><a href="#contexts-web">Web Context</a></li>
+                        <li><a href="#contexts-desktop">Desktop Context</a></li>
+                    </ul>
+                </li>
+                <li><a href="#playback">Playback</a></li>
             </ul>
         </div>
     </div>
     <div class="col-sm-9 col-xs-12">
         <div id="controls">
             <h1 class="page-header">Controls</h1>
-            <p class="lead">
-                A control is generic accross all technologies.
+            <div id="controls-overview">
+                <h3>Overview</h3>
+                <p>
+                    Controls represent logical areas or elements within web, desktop, or mobile applications. A control could be an entire page, screen or view, it
+                    could be a logical area like a header or footer, or it could be a specific control like a button or text box.
+                </p>
+                <p>
+                    All controls can contain child controls enabling the page object pattern encouraging maintainability.
+                </p>
+                <p>
+                    <span class="label label-primary">Example</span><br />
+                    You have a HomePage and it consists of three logical areas such as the header, the footer, and the content area. Inside of the header you have
+                    a search area. In this particular example, the search area contains a helper method to enter text and click search.
+                    <pre><code class="language-csharp">
+public class HomePage : WebControl //Full page control
+{
+    //Logical area controls
+    public Header Header { get { return this.CreateControl&lt;Header&gt;(".header"); } }
+    public Content Content { get { return this.CreateControl&lt;Control&gt;(".content"); } }
+    public Footer Footer { get { return this.CreateControl&lt;Footer&gt;(".footer"); } }
+}
+   
+public class Header : WebControl
+{
+    //Logical area controls
+    public SearchArea SearchArea { get { return this.CreateControl&lt;SearchArea&gt;(".searcharea"); } }
+}
+   
+public class SearchArea : WebControl
+{
+    //Specific controls
+    public WebControl SearchTextbox { get { return this.CreateControl(".searchtextbox"); } }
+    public WebControl SearchBtn { get { return this.CreateControl(".searchbtn"); } }
+    
+    /// &lt;summary&gt;
+    /// Helper to search for text. 
+    /// 1. Enters the text.
+    /// 2. Clicks the search button.
+    /// &lt;/summary&gt;
+    public void Search(string searchText)
+    {
+        this.SearchTextbox.SendKeys(searchText);
+        this.SearchBtn.Click();
+    }
+}</code></pre>
+                    <span class="label label-primary">Usage</span>
+<pre><code class="language-csharp">
+using(var context = new WebContext(new OpenQA.Selenium.Firefox.FirefoxDriver()))
+{
+    //Create the homepage
+    var homePage = new HomePage(context);
+    //Get a ref to the search area
+    var searchArea = homePage.Header.SearchArea;
+    //This would enter the text and click search
+    searchArea.Search("this is cool");
+}</code></pre>
+                </p>
+            </div>
+
+            <div id="controls-creation">
+                <h3>Creating Controls</h3>
+                <p>
+                    Creating controls across web, desktop, and mobile applications is identical. You can either create the instance yourself,
+                    or you can use our simple extension method which simplifies the process.
+                </p>
+                <p>
+                    All controls are lazy loaded, thus when you create a control it will not search for itself straight away. This means you can
+                    create the controls you need at the top of your methods. Only when you call an action or property on the control will it perform a search.
+                </p>
+                <p>
+                    <span class="label label-primary">Example</span><br />
+                    Create a control using the 'CreateControl' extension method. This method automatically attaches the context, the parent, and
+                    adds '.sample-textbox' as a search property. Reducing the complexity of the example below.
+                    <pre><code class="language-csharp">
+using Aframe.Web.Controls; //Note: This is required to get the extension method!
+public class Sample : WebControl
+{
+    public WebControl SampleControl { get { return this.CreateControl&lt;WebControl&gt;(".sample-textbox"); } }
+}</code></pre>
+                </p>
+                <p>
+                    <span class="label label-primary">Example</span><br />
+                    Create an instance passing in a context, then set its parent and search properties explicitly.
+                    <pre><code class="language-csharp">
+var context = new WebContext(new OpenQA.Selenium.Firefox.FirefoxDriver());
+var sampleControl = new WebControl(context);
+sampleControl.SearchProperties.Add(WebControl.SearchNames.JQuerySelector, ".sample-textbox")
+sampleControl.Parent = &lt;insert parent control here&gt; //If there is no parent, leave it as null.
+</code></pre>
+                </p>
+            </div>
+            <div id="controls-scoping">
+                <h3>Scoping</h3>
+                <p>
+                    By default, each control is scoped by its 'Parent'. If you use the 'CreateControl' extension method then
+                    the parent, context, and search properties are automatically mapped.
+                </p>
+                <p>
+                    When a search is performed on a particular control, AFrame will walk up its parents all the way
+                    to the first control in the parent/child hierarchy. It will then search each of the controls 1 by 1
+                    until it gets back to the initial control requested.
+                </p>
+                <div id="controls-search-properties">
+                    <h3>Search Properties</h3>
+                    <p>
+                        Whilst creating a control you can give it search properties. These search properties tell AFrame how
+                        and where to find the control.
+                    </p>
+                    <p>
+                        You can have as many SearchProperites for a control as you like, however normally one or two will suffice.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div id="contexts">
+            <h1 class="page-header">Contexts</h1>
+            <p>
+                Before we use controls we need to setup a context. Each technology (web, desktop, mobile) has a specific
+                context which manages its own implementation.
             </p>
-            <div id="controls-creating">
-                <h3>Creating</h3>
+            <p>
+                All contexts implement IDisposable thus are supported within using statements etc. Calling .Dispose() will
+                call the cleanup method.
+            </p>
+            <div id="contexts-web">
+                <h3>Web Context</h3>
+                <p>
+                    A WebContext takes a 'Selenium WebDriver' as a parameter.
+                </p>
+                <p>
+                    <span class="label label-primary">Example</span>
+                </p>
+                <pre><code class="language-csharp">
+//This uses a firefox driver, but it could be any other driver like ChromeDriver, IEDriver etc
+//It can also be a RemoteWebDriver to use it with Browserstack or SauceLabs etc
+using(var context = new WebContext(new OpenQA.Selenium.Firefox.FirefoxDriver()))
+{
+    //Create the homepage
+    var homePage = new HomePage(context);
+    //Get a ref to the search area
+    var searchArea = homePage.Header.SearchArea;
+    //This would enter the text and click search
+    searchArea.Search("this is cool");
+}</code></pre>
             </div>
-            <div id="controls-finding">
-                <h3>Finding</h3>
+            <div id="contexts-desktop">
+                <h3>Desktop Context</h3>
+                <p>
+                    A DesktopContext doesn't take anything as a parameter, however it does store the application under test which is requried
+                    by CodedUI to work.
+                </p>
+                <p>
+                    <span class="label label-primary">Example</span>
+                </p>
+                <pre><code class="language-csharp">
+using(var app = new DesktopContext().Launch&lt;WinFormsApp&gt;(&lt;path to executable&gt;))
+{
+    //Click the login button inside the app.
+    app.LoginButton.Click();
+}</code></pre>
             </div>
         </div>
-        <div id="test">
-            <h1>Test</h1>
-        </div>
-        <div id="test2">
-            <h1>Test2</h1>
+        <div id="playback">
+            <h1 class="page-header">Playback</h1>
+            <p>
+                Playback is a static class that has some configuration properties such as:
+            </p>
+            <p>
+                <ul>
+                    <li>Search Timeout (How long AFrame with search for the control until it gives up. Default=30 seconds)</li>
+                    <li>Highlight On Find (When AFrame finds the control, it will highlight it by default (Except for Desktop))</li>
+                    <li>Always Search (When searching, don't store a cache, search for the control each time.)</li>
+                    <li>Properties (A place that can store what ever you like.)</li>
+                </ul>
+            </p>
+            <br />
+            <br />
         </div>
     </div>
     <div class="links col-sm-offset-3 col-sm-9 col-xs-12">
-        <a class="btn btn-default pull-left" href="/gettingstarted"><span class="glyphicon glyphicon-circle-arrow-left" style="padding-right: 10px; top: 3px;"></span> Previous: Getting Started</a>
-        <a class="btn btn-default pull-right" href="/web">Next: Web <span class="glyphicon glyphicon-circle-arrow-right" style="padding-left: 10px; top: 3px;"></span></a>
+        <a class="btn btn-primary pull-left" href="/gettingstarted"><span class="glyphicon glyphicon-circle-arrow-left" style="padding-right: 10px; top: 3px;"></span>Getting Started</a>
+        <!--<a class="btn btn-primary pull-right" href="/web">Web<span class="glyphicon glyphicon-circle-arrow-right" style="padding-left: 10px; top: 3px;"></span></a>-->
     </div>
 </div>

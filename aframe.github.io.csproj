@@ -48,6 +48,9 @@
     <Content Include="css\bootstrap-theme.min.css" />
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\site.css" />
+    <Content Include="css\site.min.css">
+      <DependentUpon>site.css</DependentUpon>
+    </Content>
     <Content Include="desktop\index.html" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="gettingstarted\index.html" />
@@ -55,7 +58,6 @@
     <Content Include="js\bootstrap.min.js" />
     <Content Include="js\holder.js" />
     <Content Include="js\jquery-1.11.2.min.js" />
-    <Content Include="mobile\index.html" />
     <Content Include="web\index.html" />
     <Content Include="_includes\footer.html" />
     <Content Include="_includes\head.html" />
@@ -101,6 +103,11 @@
     <Compile Include="_site\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="_site\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="_site\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="css\site.css.map">
+      <DependentUpon>site.css</DependentUpon>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

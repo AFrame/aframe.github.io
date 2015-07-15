@@ -7,8 +7,8 @@ layout: default
         <div class="heading">
             Getting Started
         </div>
-        <ul class="nav nav-pills" role="tablist" >
-            <li role="presentation" class="active"><a href="#web" aria-controls="web" role="tab" data-toggle="tab" >AFrame.Web</a></li>
+        <ul class="nav nav-pills" role="tablist">
+            <li role="presentation" class="active"><a href="#web" aria-controls="web" role="tab" data-toggle="tab">AFrame.Web</a></li>
             <li role="presentation"><a href="#desktop" aria-controls="desktop" role="tab" data-toggle="tab">AFrame.Desktop</a></li>
         </ul>
     </div>
@@ -32,48 +32,26 @@ layout: default
                             <pre><code class="language-csharp">
 using AFrame.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace UnitTestProject1
 {
     [TestClass]
     public class UnitTest1
     {
-        /// <summary>
-        /// Initializes the context only once and only when needed
-        /// </summary>
-        private WebContext _webContext;
-        public WebContext WebContext 
-        {
-            get
-            {
-                if(this._webContext == null)
-                {
-                    //We are using Firefox in this example, but it could also 
-                    //be IE, Chrome, Safari etc - It could also be a remote webdriver 
-                    //utilizing services like browserstack or saucelabs
-                    var driver = new OpenQA.Selenium.Firefox.FirefoxDriver();
-                    this._webContext = new WebContext(driver);
-                }
-                return this._webContext;
-            }
-        }
         [TestMethod]
         public void GoogleHomepageShouldContainSearchButton()
         {
-            //Arrange
-            var homepage = this.WebContext.NavigateTo("https://www.google.com");
-            //Act
-            var searchBtn = homepage.CreateControl("button:contains('Google Search')");
-            //Assert
-            Assert.IsTrue(searchBtn.Exists);
-        }
-        /// <summary>
-        /// Gets executed at the end of every single test
-        /// </summary>
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            //Cleanup the web browser 
-            this.WebContext.Dispose();
+            using(var context = new WebContext(new OpenQA.Selenium.Firefox.FirefoxDriver()))
+            {
+                //Arrange
+                var homepage = context.NavigateTo("https://www.google.com");
+
+                //Act
+                var searchBtn = homepage.CreateControl("button:contains('Google Search')"); //jQuery selectors!
+
+                //Assert
+                Assert.IsTrue(searchBtn.Exists);
+            }
         }
     }
 }</code></pre>
@@ -93,52 +71,35 @@ using AFrame.Desktop;
 using AFrame.Desktop.Controls.Win;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace UnitTestProject1
 {
     [CodedUITest]
-    public class UnitTest2
+    public class UnitTest1
     {
-        /// 
-        /// Initializes the context only once and only when needed
-        /// 
-        private DesktopContext _desktopContext;
-        public DesktopContext DesktopContext
-        {
-            get
-            {
-                if (this._desktopContext == null)
-                {
-                    this._desktopContext = new DesktopContext();
-                }
-                return this._desktopContext;
-            }
-        }
         [TestMethod]
         public void TwoPlusTwoEqualsFour()
         {
-            //Arrange
-            var calculator = this.DesktopContext.Launch<winwindow>(@"C:\Windows\system32\calc.exe");
-            calculator.SearchProperties.Add(WinWindow.PropertyNames.Name, "Calculator");
-            var twoBtn = calculator.CreateControl<winbutton>("2");
-            var plusBtn = calculator.CreateControl<winbutton>("Add");
-            var equalsBtn = calculator.CreateControl<winbutton>("Equals");
-            var resultTxt = calculator.CreateControl<wintext>("Result");
-            //Act
-            twoBtn.Click();
-            plusBtn.Click();
-            twoBtn.Click();
-            equalsBtn.Click();
-            //Assert
-            Assert.AreEqual("4", resultTxt.DisplayText);
-        }
-        /// 
-        /// Gets executed at the end of every single test
-        /// 
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            //Cleanup the application
-            this.DesktopContext.Dispose();
+            using(var context = new DesktopContext())
+            {
+                //Arrange
+                var calculator = context.Launch&lt;WinWindow&gt;(@"C:\Windows\system32\calc.exe");
+                calculator.SearchProperties.Add(WinWindow.PropertyNames.Name, "Calculator");
+
+                var twoBtn = calculator.CreateControl&lt;WinButton&gt;("2");
+                var plusBtn = calculator.CreateControl&lt;WinButton&gt;("Add");
+                var equalsBtn = calculator.CreateControl&lt;WinButton&gt;("Equals");
+                var resultTxt = calculator.CreateControl&lt;WinText&gt;("Result");
+
+                //Act
+                twoBtn.Click();
+                plusBtn.Click();
+                twoBtn.Click();
+                equalsBtn.Click();
+
+                //Assert
+                Assert.AreEqual("4", resultTxt.DisplayText);
+            }
         }
     }
 }</code></pre>
@@ -148,9 +109,9 @@ namespace UnitTestProject1
 
             </div>
 
-            <!--<div>
-                <a class="btn btn-primary pull-right" href="/core">Next: Core Concepts <span class="glyphicon glyphicon-circle-arrow-right" style="padding-left: 10px; top: 3px;"></span></a>
-            </div>-->
+            <div>
+                <a class="btn btn-primary pull-right" href="/core">Core Concepts <span class="glyphicon glyphicon-circle-arrow-right" style="padding-left: 10px; top: 3px;"></span></a>
+            </div>
         </div>
     </div>
 </div>
